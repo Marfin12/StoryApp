@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Story App</string>
+
+    <string name="login">login</string>
+    <string name="register">Register</string>
+
+    <string name="error_empty">Do not input blank on highlighted red field</string>
+    <string name="error_password">Password must be at least 6 characters long</string>
+    <string name="error_story_list">Oops! something went wrong! please try again later</string>
+
+    <string name="hint_username">   Username</string>
+    <string name="hint_email">   Email</string>
+    <string name="hint_password">   Password</string>
+
+    <string name="add_story_book">Add story book</string>
+    <string name="language">Language</string>
+    <string name="logout">Logout</string>
+
+    <string name="template_story_name">story name</string>
+    <string name="template_story_description">Some description should be written here...</string>
+    <string name="template_story_image">story image</string>
+
+    <string name="gallery">gallery</string>
+    <string name="camera">camera</string>
+    <string name="upload">upload</string>
+    <string name="image_preview">Image Preview</string>
+
+</resources>
