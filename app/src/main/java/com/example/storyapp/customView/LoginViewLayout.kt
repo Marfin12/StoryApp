@@ -1,16 +1,17 @@
 package com.example.storyapp.customView
 
 import android.content.Context
-import android.text.InputType
 import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import com.example.storyapp.R
 
 class LoginViewLayout : CustomViewLayout {
 
     val emailEditText = EditText(context)
     val passwordEditText = EditText(context)
+    val imageView = ImageView(context)
 
     constructor(context: Context) : super(context)
 
@@ -31,7 +32,7 @@ class LoginViewLayout : CustomViewLayout {
                 LayoutParams.WRAP_CONTENT
             )
         )
-        addEditText(
+        addCommonEditText(
             editText = emailEditText,
             LayoutParams(
                 LayoutParams.MATCH_PARENT,
@@ -43,20 +44,7 @@ class LoginViewLayout : CustomViewLayout {
                 )
             }
         )
-        addEditText(
-            editText = passwordEditText,
-            LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
-            ),
-            context.getString(R.string.hint_password),
-            { editText, context, customTextViewErrorLayout, s ->
-                Utils.onValidatePassword(
-                    editText, context, customTextViewErrorLayout, s
-                )
-            },
-            InputType.TYPE_TEXT_VARIATION_PASSWORD
-        )
+        addPasswordEditText(passwordEditText)
         addCustomTextViewErrorLayout()
     }
 

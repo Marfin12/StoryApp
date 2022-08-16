@@ -9,6 +9,7 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
 import androidx.appcompat.app.AlertDialog
+import com.example.storyapp.model.StoryModel
 import com.example.storyapp.network.ApiResponse
 import com.example.storyapp.network.ApiStatus
 import java.io.*
@@ -101,10 +102,21 @@ fun reduceFileImage(file: File): File {
     return file
 }
 
-fun getApiResponse(message: String?, apiStatus: ApiStatus): ApiResponse {
+fun getApiResponse(message: String?, apiStatus: ApiStatus): ApiResponse<Any> {
     return ApiResponse(
         message,
-        apiStatus
+        apiStatus,
+        null
+    )
+}
+
+fun getApiResponse(
+    message: String?, apiStatus: ApiStatus, data: List<StoryModel>
+): ApiResponse<List<StoryModel>> {
+    return ApiResponse(
+        message,
+        apiStatus,
+        data
     )
 }
 

@@ -10,39 +10,39 @@
         android:id="@+id/previewImageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginStart="76dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="76dp"
         android:layout_marginBottom="8dp"
+        android:src="@drawable/icon_image_place_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_image_place_holder"
         android:contentDescription="@string/image_preview" />
 
     <Button
         android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/teal_200"
         android:text="@string/camera"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@id/galleryButton"
-        app:layout_constraintTop_toBottomOf="@+id/previewImageView" />
+        app:layout_constraintEnd_toStartOf="@+id/galleryButton"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/previewImageView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
         android:id="@+id/galleryButton"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/teal_700"
         android:text="@string/gallery"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/previewImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cameraButton"
         app:layout_constraintTop_toBottomOf="@+id/previewImageView" />
 
     <EditText
@@ -54,7 +54,7 @@
         android:layout_marginTop="24dp"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        android:gravity="top|left"
+        android:gravity="top|start"
         android:hint="@string/template_story_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/galleryButton"
@@ -75,5 +75,14 @@
         app:layout_constraintEnd_toEndOf="@id/descriptionEditText"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <include
+        android:id="@+id/loadingUploadStory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        layout="@layout/loading_upload_story"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

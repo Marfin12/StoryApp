@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="transparent_green">#33B7FBA7</color>
+    <color name="transparent_green_02">#33B7FBA7</color>
+    <color name="transparent_green_07">#B3B7FBA7</color>
     <color name="error_password">#FC4646</color>
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>

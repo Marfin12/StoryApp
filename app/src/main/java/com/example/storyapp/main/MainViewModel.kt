@@ -2,12 +2,14 @@ package com.example.storyapp.main
 
 import androidx.lifecycle.*
 import com.example.storyapp.DataMapper
-import com.example.storyapp.EMPTY_STRING
 import com.example.storyapp.data.StoryRepository
+import com.example.storyapp.getApiResponse
 import com.example.storyapp.model.StoryModel
 import com.example.storyapp.model.UserModel
 import com.example.storyapp.model.UserPreference
+import com.example.storyapp.network.ApiResponse
 import com.example.storyapp.network.ApiStatus
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -15,39 +17,30 @@ class MainViewModel(
     private val pref: UserPreference,
     private val storyRepository: StoryRepository
     ) : ViewModel() {
-    private val _message = MutableLiveData<String>()
-    var message: LiveData<String> = _message
-
-    private val _status = MutableLiveData<ApiStatus>()
-    var status: LiveData<ApiStatus> = _status
-
-    private val _stories = MutableLiveData<List<StoryModel>>()
-    var stories: LiveData<List<StoryModel>> = _stories
+    private val _stories = MutableLiveData<ApiResponse<List<StoryModel>>>()
+    var stories: LiveData<ApiResponse<List<StoryModel>>> = _stories
 
     fun getStories(token: String) {
-        _message.value = EMPTY_STRING
-        _status.value = ApiStatus.LOADING
+        _stories.value = getApiResponse(null, ApiStatus.LOADING, listOf())
         viewModelScope.launch {
+            delay(1000)
             try{
                 val response = storyRepository.getStoryList(token)
                 when {
                     response.storyResults.isEmpty() -> {
-                        _status.value = ApiStatus.EMPTY
-                        _message.value = response.message
+                        _stories.value = getApiResponse(response.message, ApiStatus.EMPTY, listOf())
                     }
                     response.isError -> {
-                        _status.value = ApiStatus.ERROR
-                        _message.value = response.message
+                        _stories.value = getApiResponse(response.message, ApiStatus.ERROR, listOf())
                     }
                     else -> {
                         val listStory = DataMapper.mapResponsesToStoryModel(response.storyResults)
-                        _stories.postValue(listStory)
-                        _status.value = ApiStatus.SUCCESS
+                        _stories.value = getApiResponse(response.message, ApiStatus.SUCCESS, listStory)
                     }
                 }
             }
             catch (ex: Exception) {
-                _status.value = ApiStatus.ERROR
+                _stories.value = getApiResponse(ex.message, ApiStatus.ERROR, listOf())
             }
         }
     }

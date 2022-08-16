@@ -33,7 +33,7 @@ class RegisterViewLayout : CustomViewLayout {
             ),
             R.drawable.icon_story_app_register
         )
-        addEditText(
+        addCommonEditText(
             editText = usernameEditText,
             LayoutParams(
                 LayoutParams.MATCH_PARENT,
@@ -45,7 +45,7 @@ class RegisterViewLayout : CustomViewLayout {
                 )
             }
         )
-        addEditText(
+        addCommonEditText(
             editText = emailEditText,
             LayoutParams(
                 LayoutParams.MATCH_PARENT,
@@ -57,20 +57,7 @@ class RegisterViewLayout : CustomViewLayout {
                 )
             }
         )
-        addEditText(
-            editText = passwordEditText,
-            LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
-            ),
-            context.getString(R.string.hint_password),
-            { editText, context, customTextViewErrorLayout, s ->
-                Utils.onValidatePassword(
-                    editText, context, customTextViewErrorLayout, s
-                )
-            },
-            InputType.TYPE_TEXT_VARIATION_PASSWORD
-        )
+        addPasswordEditText(passwordEditText)
         addCustomTextViewErrorLayout()
     }
 

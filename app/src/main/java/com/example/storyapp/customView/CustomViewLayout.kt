@@ -18,6 +18,7 @@ import com.example.storyapp.R
 open class CustomViewLayout : LinearLayout {
 
     val customTextViewErrorLayout = CustomTextViewErrorLayout(context)
+    var isPasswordClose = true
 
     constructor(context: Context) : super(context)
 
@@ -68,7 +69,7 @@ open class CustomViewLayout : LinearLayout {
         addView(customTextViewErrorLayout)
     }
 
-    open fun addEditText(
+    open fun addCommonEditText(
         editText: EditText,
         layoutParams: LayoutParams,
         hint: String,
@@ -86,7 +87,7 @@ open class CustomViewLayout : LinearLayout {
         editText.background = ContextCompat.getDrawable(context, R.drawable.bg_edittext) as Drawable
         editText.hint = hint
         editText.setPadding(20)
-        if (inputType != null) editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        if (inputType != null) editText.inputType = inputType
         if (onTextChangedListener != null) {
             editText.addTextChangedListener(onEditTextChangedListener(
                 editText, context, customTextViewErrorLayout, onTextChangedListener
@@ -96,8 +97,64 @@ open class CustomViewLayout : LinearLayout {
         addView(editText)
     }
 
+    fun addPasswordEditText(
+        passwordEditText: EditText
+    ) {
+        val customPasswordEditText = CustomPasswordEditTextLayout(context)
+        customPasswordEditText.addCommonEditText(
+            passwordEditText,
+            LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
+            ),
+            context.getString(R.string.hint_password),
+            { edt, context, customTextViewErrorLayout, s ->
+                Utils.onValidatePassword(
+                    edt, context, customTextViewErrorLayout, s
+                )
+            },
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        )
+        val eyeImageView = ImageView(context)
+        customPasswordEditText.addEyeImageView(eyeImageView)
+
+        addView(customPasswordEditText)
+        passwordEditText.setPadding(20, 20, 100, 20)
+
+        onEyePasswordClick(eyeImageView, passwordEditText)
+    }
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+    }
+
+    private fun onEyePasswordClick(
+        eyeImageView: ImageView,
+        passwordEditText: EditText
+    ) {
+        eyeImageView.setOnClickListener {
+            if (isPasswordClose) {
+                eyeImageView.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.icon_eye_password_open
+                    ) as Drawable
+                )
+                isPasswordClose = false
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT
+                passwordEditText.setSelection(passwordEditText.text.length)
+            } else {
+                eyeImageView.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.icon_eye_password_close
+                    ) as Drawable
+                )
+                isPasswordClose = true
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                passwordEditText.setSelection(passwordEditText.text.length)
+            }
+        }
     }
 
     private fun onEditTextChangedListener(

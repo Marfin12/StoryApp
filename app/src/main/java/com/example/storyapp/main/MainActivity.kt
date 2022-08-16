@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModel() {
         mainViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore), this)
+            ViewModelFactory(UserPreference.getInstance(dataStore))
         )[MainViewModel::class.java]
 
         initUserViewModel()
@@ -83,23 +83,18 @@ class MainActivity : AppCompatActivity() {
         val adapter = StoryListAdapter()
         binding.rvStory.adapter = adapter
 
-        mainViewModel.stories.observe(this) {
-            adapter.submitList(it)
-            listStories = it
-        }
-
-        mainViewModel.message.observe(this) {
-            message = it
-        }
-
-        mainViewModel.status.observe(this) {
-            when(it) {
+        mainViewModel.stories.observe(this) { storyResponse ->
+            when(storyResponse.apiStatus) {
                 ApiStatus.LOADING -> {
                     binding.incLoadingStory.root.visibility = View.VISIBLE
                     binding.rvStory.visibility = View.GONE
                 }
                 ApiStatus.SUCCESS -> {
                     animStoriesItem.end()
+
+                    adapter.submitList(storyResponse.data)
+                    listStories = storyResponse.data!!
+
                     binding.incLoadingStory.root.visibility = View.GONE
                     binding.rvStory.visibility = View.VISIBLE
                 }
@@ -107,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                     animStoriesItem.end()
                     binding.incLoadingStory.root.visibility = View.GONE
                     binding.incEmptyStory.root.visibility = View.VISIBLE
-                    binding.incEmptyStory.errorMessageTextView.text = message
+                    binding.incEmptyStory.errorMessageTextView.text = storyResponse.message
                 }
                 ApiStatus.ERROR -> {
                     onStoriesError()
@@ -156,16 +151,16 @@ class MainActivity : AppCompatActivity() {
     private fun playAnimation() {
         with(binding.incLoadingStory) {
             val templateCardExpand2 = ObjectAnimator.ofFloat(
-                templateCard2, View.TRANSLATION_Y, 0f, 40f
+                templateCard2, View.TRANSLATION_Y, 0f, 440f
             ).apply {
-                duration = 6000
+                duration = 3000
                 repeatCount = ObjectAnimator.INFINITE
                 repeatMode = ObjectAnimator.REVERSE
             }
             val templateCardExpand3 = ObjectAnimator.ofFloat(
-                templateCard3, View.TRANSLATION_Y, 0f, 80f
+                templateCard3, View.TRANSLATION_Y, 0f, 880f
             ).apply {
-                duration = 4000
+                duration = 3000
                 repeatCount = ObjectAnimator.INFINITE
                 repeatMode = ObjectAnimator.REVERSE
             }

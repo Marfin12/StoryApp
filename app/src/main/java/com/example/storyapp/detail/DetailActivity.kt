@@ -39,7 +39,7 @@ class DetailActivity : AppCompatActivity() {
     private fun setupViewModel() {
         detailViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore), this)
+            ViewModelFactory(UserPreference.getInstance(dataStore))
         )[DetailViewModel::class.java]
 
         detailViewModel.getUser().observe(this) { user ->

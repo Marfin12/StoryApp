@@ -15,7 +15,7 @@
     <string name="failed_register_title">Register failed!</string>
     <string name="failed_register_description">Please make sure all fields get inputted correctly!</string>
 
-    <string name="ok_dialog">Ok</string>
+    <string name="ok_dialog">OK</string>
 
     <string name="hint_username">   Username</string>
     <string name="hint_email">   Email</string>
@@ -26,21 +26,25 @@
     <string name="logout">Logout</string>
 
     <string name="template_story_name">story name</string>
-    <string name="template_story_description">Some description should be written here...</string>
+    <string name="template_story_description">Some description should be written here…</string>
     <string name="template_story_image">story image</string>
 
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_story">List story</string>
-    <string name="empty_text">No Story</string>
+    <string name="empty_story">No Story</string>
 
     <string name="camera_choose_a_picture">Choose a Picture</string>
     <string name="camera_retrofit_failure">Failure on retrofit instance</string>
     <string name="camera_please_input_image_file">Please input the image file.</string>
+    <string name="camera_please_input_description">Please input the description.</string>
     <string name="camera_permission_access_failed">Permission access not allowed</string>
     <string name="camera">camera</string>
     <string name="gallery">gallery</string>
     <string name="upload">upload</string>
     <string name="image_preview">Image Preview</string>
+
+    <string name="loading_common_image">Loading Image</string>
+    <string name="loading_upload_image">Uploading Loading Image</string>
 
 </resources>

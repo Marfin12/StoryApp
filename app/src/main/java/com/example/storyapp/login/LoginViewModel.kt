@@ -14,8 +14,8 @@ class LoginViewModel(
     private val pref: UserPreference,
     private val storyRepository: StoryRepository
     ) : ViewModel() {
-    private val _status = MutableLiveData<ApiResponse>()
-    var status: LiveData<ApiResponse> = _status
+    private val _status = MutableLiveData<ApiResponse<Any>>()
+    var status: LiveData<ApiResponse<Any>> = _status
 
     fun login(email: String, password: String) {
         _status.value = getApiResponse(null, ApiStatus.LOADING)

@@ -6,7 +6,7 @@
     android:id="@+id/loadingMotion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent_green_02"
+    android:background="@color/transparent_green_07"
     app:layoutDescription="@xml/loading_common_scene"
     tools:context=".main.MainActivity">
 
@@ -15,12 +15,12 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:alpha="0"
-        android:contentDescription="@string/loading_common_image"
+        android:contentDescription="@string/loading_upload_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_story_app_login" />
+        app:srcCompat="@drawable/icon_image_place_holder" />
 
     <ProgressBar
         android:id="@+id/progressBarMedium"

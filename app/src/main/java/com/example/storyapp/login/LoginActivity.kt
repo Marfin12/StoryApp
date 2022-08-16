@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -14,7 +13,6 @@ import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.databinding.ActivityLoginBinding
 import com.example.storyapp.main.MainActivity
-import com.example.storyapp.model.UserModel
 import com.example.storyapp.model.UserPreference
 import com.example.storyapp.network.ApiStatus
 import com.example.storyapp.register.RegisterActivity
@@ -38,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         loginViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore), this)
+            ViewModelFactory(UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
 
         loginViewModel.status.observe(this) { apiResponse ->

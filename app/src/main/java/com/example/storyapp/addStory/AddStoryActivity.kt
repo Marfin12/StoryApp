@@ -1,41 +1,46 @@
 package com.example.storyapp.addStory
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.example.storyapp.R
-import com.example.storyapp.createCustomTempFile
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
+import com.example.storyapp.*
 import com.example.storyapp.databinding.ActivityAddStoryBinding
+import com.example.storyapp.login.LoginActivity
 import com.example.storyapp.main.MainActivity
-import com.example.storyapp.network.ApiConfig
-import com.example.storyapp.reduceFileImage
-import com.example.storyapp.response.FileUploadResponse
-import com.example.storyapp.uriToFile
+import com.example.storyapp.model.UserPreference
+import com.example.storyapp.network.ApiStatus
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
     private lateinit var currentPhotoPath: String
+    private lateinit var addStoryViewModel: AddStoryViewModel
 
     private var getFile: File? = null
+    private var token = ""
 
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
@@ -65,14 +70,64 @@ class AddStoryActivity : AppCompatActivity() {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (!allPermissionsGranted()) {
-            ActivityCompat.requestPermissions(
-                this,
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
+        setupViewModel()
+        setupComponent()
+        setupPermission()
+    }
+
+    private fun setupViewModel() {
+        addStoryViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(UserPreference.getInstance(dataStore))
+        )[AddStoryViewModel::class.java]
+
+        addStoryViewModel.getUser().observe(this) { user ->
+            if (user.isLogin) {
+                token = user.token
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
         }
 
+        addStoryViewModel.uploadStatus.observe(this) { uploadStatus ->
+            when(uploadStatus.apiStatus) {
+                ApiStatus.LOADING -> {
+                    binding.loadingUploadStory.loadingMotion.transitionToStart()
+                    binding.loadingUploadStory.root.visibility = View.VISIBLE
+                }
+                ApiStatus.SUCCESS -> {
+                    binding.loadingUploadStory.root.visibility = View.GONE
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    val otherFlags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and otherFlags)
+                    startActivity(intent)
+                    finish()
+                }
+                ApiStatus.ERROR -> {
+                    binding.loadingUploadStory.root.visibility = View.GONE
+
+                    Toast.makeText(
+                        this@AddStoryActivity,
+                        uploadStatus.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> {
+                    binding.loadingUploadStory.root.visibility = View.GONE
+
+                    Toast.makeText(
+                        this@AddStoryActivity,
+                        R.string.error_try_again_later,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun setupComponent() {
         binding.cameraButton.setOnClickListener {
             startTakePhoto()
         }
@@ -80,12 +135,32 @@ class AddStoryActivity : AppCompatActivity() {
             startGallery()
         }
         binding.uploadButton.setOnClickListener {
-            uploadImage(binding.descriptionEditText.text.toString())
+            val description = binding.descriptionEditText.text.toString()
+            if (isValidateUploadButton(description))
+                uploadStory(description)
         }
     }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+    private fun setupPermission() {
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(
+                this,
+                REQUIRED_PERMISSIONS,
+                REQUEST_CODE_PERMISSIONS
+            )
+        }
+    }
+
+    private fun uploadStory(desc: String) {
+        val file = reduceFileImage(getFile as File)
+        val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+            "photo",
+            file.name,
+            requestImageFile
+        )
+
+        addStoryViewModel.uploadStory(token, imageMultipart, desc.toRequestBody("text/plain".toMediaType()))
     }
 
     private fun startGallery() {
@@ -103,7 +178,7 @@ class AddStoryActivity : AppCompatActivity() {
         createCustomTempFile(application).also {
             val photoURI: Uri = FileProvider.getUriForFile(
                 this@AddStoryActivity,
-                "com.dicoding.picodiploma.mycamera",
+                "com.example.storyapp",
                 it
             )
             currentPhotoPath = it.absolutePath
@@ -138,42 +213,27 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage(desc: String) {
-        if (getFile != null) {
-            val file = reduceFileImage(getFile as File)
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+    }
 
-            val description = desc.toRequestBody("text/plain".toMediaType())
-            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                "photo",
-                file.name,
-                requestImageFile
-            )
-            val service = ApiConfig.getApiService().uploadImage(imageMultipart, description)
-
-            service.enqueue(object : Callback<FileUploadResponse> {
-                override fun onResponse(
-                    call: Call<FileUploadResponse>,
-                    response: Response<FileUploadResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-                        if (responseBody != null && !responseBody.error) {
-                            Toast.makeText(this@AddStoryActivity, responseBody.message, Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@AddStoryActivity, MainActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            startActivity(intent)
-                        }
-                    } else {
-                        Toast.makeText(this@AddStoryActivity, response.message(), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
-                    Toast.makeText(this@AddStoryActivity, getString(R.string.camera_retrofit_failure), Toast.LENGTH_SHORT).show()
-                }
-            })
-        } else {
-            Toast.makeText(this@AddStoryActivity, getString(R.string.camera_please_input_image_file), Toast.LENGTH_SHORT).show()
+    private fun isValidateUploadButton(desc: String): Boolean {
+        if (getFile == null) {
+            Toast.makeText(
+                this@AddStoryActivity,
+                getString(R.string.camera_please_input_image_file),
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
         }
+        if (desc.isEmpty()) {
+            Toast.makeText(
+                this@AddStoryActivity,
+                getString(R.string.camera_please_input_description),
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+        return true
     }
 }

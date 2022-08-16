@@ -1,7 +1,6 @@
 package com.example.storyapp.register
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,8 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.databinding.ActivityRegisterBinding
-import com.example.storyapp.main.MainActivity
-import com.example.storyapp.model.UserModel
 import com.example.storyapp.model.UserPreference
 import com.example.storyapp.network.ApiStatus
 import com.example.storyapp.showMessageDialog
@@ -44,7 +41,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupViewModel() {
         registerViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore), this)
+            ViewModelFactory(UserPreference.getInstance(dataStore))
         )[RegisterViewModel::class.java]
 
         registerViewModel.status.observe(this) { apiResponse ->

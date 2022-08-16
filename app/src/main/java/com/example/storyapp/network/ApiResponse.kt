@@ -1,6 +1,8 @@
 package com.example.storyapp.network
 
-data class ApiResponse(
+
+data class ApiResponse<T>(
     var message: String? = null,
-    var apiStatus: ApiStatus? = null
+    var apiStatus: ApiStatus? = null,
+    var data: T? = null
 )

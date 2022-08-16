@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.storyapp.data.StoryRepository
 import com.example.storyapp.getApiResponse
-import com.example.storyapp.model.UserModel
-import com.example.storyapp.model.UserPreference
 import com.example.storyapp.network.ApiResponse
 import com.example.storyapp.network.ApiStatus
 import kotlinx.coroutines.delay
@@ -16,8 +14,8 @@ import kotlinx.coroutines.launch
 class RegisterViewModel(
     private val storyRepository: StoryRepository
     ) : ViewModel() {
-    private val _status = MutableLiveData<ApiResponse>()
-    var status: LiveData<ApiResponse> = _status
+    private val _status = MutableLiveData<ApiResponse<Any>>()
+    var status: LiveData<ApiResponse<Any>> = _status
 
     fun register(name: String, email: String, password: String) {
         _status.value = getApiResponse(null, ApiStatus.LOADING)

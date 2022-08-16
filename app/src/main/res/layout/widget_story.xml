@@ -38,7 +38,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@color/black"
-        android:text="@string/empty_text"
+        android:text="@string/empty_story"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"

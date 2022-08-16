@@ -2,10 +2,7 @@ package com.example.storyapp.model
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
-import com.example.storyapp.EMPTY_STRING
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
