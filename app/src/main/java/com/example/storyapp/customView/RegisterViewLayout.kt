@@ -1,7 +1,9 @@
 package com.example.storyapp.customView
 
 import android.content.Context
+import android.text.InputType
 import android.util.AttributeSet
+import android.view.View
 import android.widget.EditText
 import com.example.storyapp.R
 
@@ -28,29 +30,53 @@ class RegisterViewLayout : CustomViewLayout {
             LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT
-            )
+            ),
+            R.drawable.icon_story_app_register
         )
-        addCommonEditText(
-            usernameEditText,
+        addEditText(
+            editText = usernameEditText,
             LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
-            ), context.getString(R.string.hint_username)
+            ), context.getString(R.string.hint_username),
+            { editText, context, customTextViewErrorLayout, s ->
+                Utils.onValidateUsername(
+                    editText, context, customTextViewErrorLayout, s
+                )
+            }
         )
-        addCommonEditText(
-            emailEditText,
+        addEditText(
+            editText = emailEditText,
             LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
-            ), context.getString(R.string.hint_email)
+            ), context.getString(R.string.hint_email),
+            { editText, context, customTextViewErrorLayout, s ->
+                Utils.onValidateEmail(
+                    editText, context, customTextViewErrorLayout, s
+                )
+            }
         )
-        addPasswordEditText(
-            passwordEditText,
+        addEditText(
+            editText = passwordEditText,
             LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
             ),
-            context.getString(R.string.hint_password)
+            context.getString(R.string.hint_password),
+            { editText, context, customTextViewErrorLayout, s ->
+                Utils.onValidatePassword(
+                    editText, context, customTextViewErrorLayout, s
+                )
+            },
+            InputType.TYPE_TEXT_VARIATION_PASSWORD
         )
+        addCustomTextViewErrorLayout()
     }
+
+    fun isValidRegister(): Boolean =
+        emailEditText.text.isNotEmpty()
+                && passwordEditText.text.isNotEmpty()
+                && usernameEditText.text.isNotEmpty()
+                && customTextViewErrorLayout.visibility != View.VISIBLE
 }

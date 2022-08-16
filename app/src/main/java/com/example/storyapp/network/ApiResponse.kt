@@ -1,8 +1,6 @@
 package com.example.storyapp.network
 
-enum class ApiResponse {
-    SUCCESS,
-    LOADING,
-    ERROR,
-    EMPTY
-}
+data class ApiResponse(
+    var message: String? = null,
+    var apiStatus: ApiStatus? = null
+)

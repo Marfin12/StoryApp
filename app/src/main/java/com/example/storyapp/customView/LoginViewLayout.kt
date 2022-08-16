@@ -1,14 +1,16 @@
 package com.example.storyapp.customView
 
 import android.content.Context
+import android.text.InputType
 import android.util.AttributeSet
+import android.view.View
 import android.widget.EditText
 import com.example.storyapp.R
 
 class LoginViewLayout : CustomViewLayout {
 
-    private val usernameEditText = EditText(context)
-    private val passwordEditText = EditText(context)
+    val emailEditText = EditText(context)
+    val passwordEditText = EditText(context)
 
     constructor(context: Context) : super(context)
 
@@ -29,20 +31,37 @@ class LoginViewLayout : CustomViewLayout {
                 LayoutParams.WRAP_CONTENT
             )
         )
-        addCommonEditText(
-            editText = usernameEditText,
+        addEditText(
+            editText = emailEditText,
             LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
-            ), context.getString(R.string.hint_email)
+            ), context.getString(R.string.hint_email),
+            { editText, context, customTextViewErrorLayout, s ->
+                Utils.onValidateEmail(
+                    editText, context, customTextViewErrorLayout, s
+                )
+            }
         )
-        addPasswordEditText(
+        addEditText(
             editText = passwordEditText,
             LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
             ),
-            context.getString(R.string.hint_password)
+            context.getString(R.string.hint_password),
+            { editText, context, customTextViewErrorLayout, s ->
+                Utils.onValidatePassword(
+                    editText, context, customTextViewErrorLayout, s
+                )
+            },
+            InputType.TYPE_TEXT_VARIATION_PASSWORD
         )
+        addCustomTextViewErrorLayout()
     }
+
+    fun isValidLogin(): Boolean =
+        emailEditText.text.isNotEmpty()
+                && passwordEditText.text.isNotEmpty()
+                && customTextViewErrorLayout.visibility != View.VISIBLE
 }

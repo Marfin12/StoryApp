@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Aplikasi Cerita</string>
+
+    <string name="login">masuk</string>
+    <string name="register">daftar</string>
+
+    <string name="error_empty">Silahkan isi pada kolom kosong berwarna merah</string>
+    <string name="error_password">Pada kata sandi jumlah minimal 6 karakter</string>
+    <string name="error_email">Mohon untuk mengisi email yang benar</string>
+    <string name="error_try_again_later">Oops! sepertinya ada masalah! silahkan coba lagi nanti</string>
+
+    <string name="failed_login_title">Masuk gagal!</string>
+    <string name="failed_login_description">Pastikan semua kolom terisi dengan benar!</string>
+
+    <string name="failed_register_title">Daftar gagal!</string>
+    <string name="failed_register_description">Pastikan semua kolom terisi dengan benar!</string>
+
+    <string name="ok_dialog">Ok</string>
+
+    <string name="hint_username">   Nama pengguna</string>
+    <string name="hint_email">   Email</string>
+    <string name="hint_password">   Kata Sandi</string>
+
+    <string name="add_story_book">Tambah buku cerita</string>
+    <string name="language">Bahasa</string>
+    <string name="logout">Keluar</string>
+
+    <string name="template_story_name">nama cerita</string>
+    <string name="template_story_description">Deskripsi tertulis disini…</string>
+    <string name="template_story_image">gambar cerita</string>
+
+    <string name="appwidget_text">CONTOH</string>
+    <string name="add_widget">Tambah widget</string>
+    <string name="app_widget_story">Daftar cerita</string>
+    <string name="empty_text">Tidak ada cerita</string>
+
+    <string name="camera_choose_a_picture">Pilih gambar</string>
+    <string name="camera_retrofit_failure">Mengalami kegagalan pada retrofit</string>
+    <string name="camera_please_input_image_file">Silahkan masukkan berkas gambar.</string>
+    <string name="camera_permission_access_failed">Akses permission tidak di berikan</string>
+    <string name="camera">kamera</string>
+    <string name="gallery">galeri</string>
+    <string name="upload">unggah</string>
+    <string name="image_preview">Pratinjau Gambar</string>
+
+</resources>

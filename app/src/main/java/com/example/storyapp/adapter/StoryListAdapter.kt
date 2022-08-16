@@ -18,8 +18,6 @@ import com.example.storyapp.STORY
 import com.example.storyapp.databinding.ItemStoryBinding
 import com.example.storyapp.detail.DetailActivity
 import com.example.storyapp.model.StoryModel
-import com.example.storyapp.response.ListStoryResponse
-import com.example.storyapp.response.StoryResponse
 
 class StoryListAdapter :
     ListAdapter<StoryModel, StoryListAdapter.MyViewHolder>(DIFF_CALLBACK) {
@@ -31,6 +29,8 @@ class StoryListAdapter :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val data = getItem(position)
+        println("hooh")
+        println(data)
         if (data != null) {
             holder.bind(data)
         }
@@ -39,6 +39,8 @@ class StoryListAdapter :
     class MyViewHolder(private val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: StoryModel) {
+            println("binding")
+            println(data)
             Glide.with(itemView.context)
                 .load(data.photoUrl)
                 .into(object : CustomTarget<Drawable?>() {

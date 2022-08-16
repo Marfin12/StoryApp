@@ -14,7 +14,7 @@
                 />
             <stroke
                 android:width="2dp"
-                android:color="@color/material_dynamic_tertiary99" />
+                android:color="@android:color/holo_green_light" />
         </shape>
     </item>
 

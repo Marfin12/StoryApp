@@ -1,11 +1,11 @@
 package com.example.storyapp
 
 import com.example.storyapp.model.StoryModel
-import com.example.storyapp.response.StoryResponse
+import com.example.storyapp.response.StoryResultResponse
 
 
 object DataMapper {
-    fun mapResponsesToStoryModel(input: List<StoryResponse>): List<StoryModel> {
+    fun mapResponsesToStoryModel(input: List<StoryResultResponse>): List<StoryModel> {
         val storyList = ArrayList<StoryModel>()
         input.map {
             val story = StoryModel(

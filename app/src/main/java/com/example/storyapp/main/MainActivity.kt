@@ -14,14 +14,17 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.storyapp.EMPTY_STRING
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.adapter.StoryListAdapter
 import com.example.storyapp.addStory.AddStoryActivity
 import com.example.storyapp.databinding.ActivityMainBinding
 import com.example.storyapp.login.LoginActivity
+import com.example.storyapp.model.StoryModel
 import com.example.storyapp.model.UserPreference
-import com.example.storyapp.network.ApiResponse
+import com.example.storyapp.network.ApiStatus
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -29,14 +32,24 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
     private var animStoriesItem = AnimatorSet()
-    private var message = ""
+    private var message = EMPTY_STRING
+
+    companion object {
+        var listStories: List<StoryModel> = listOf()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupComponent()
         setupViewModel()
+    }
+
+    private fun setupComponent() {
+        binding.root.visibility = View.INVISIBLE
+        actionBar?.hide()
     }
 
     private fun setupViewModel() {
@@ -53,7 +66,11 @@ class MainActivity : AppCompatActivity() {
     private fun initUserViewModel() {
         mainViewModel.getUser().observe(this) { user ->
             if (user.isLogin) {
+                binding.root.visibility = View.VISIBLE
+                actionBar?.show()
                 supportActionBar?.title = user.name
+
+                mainViewModel.getStories(user.token)
             } else {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
@@ -62,13 +79,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initStoryViewModel() {
-        mainViewModel.getStories()
-
+        binding.rvStory.layoutManager = LinearLayoutManager(this)
         val adapter = StoryListAdapter()
         binding.rvStory.adapter = adapter
 
         mainViewModel.stories.observe(this) {
             adapter.submitList(it)
+            listStories = it
         }
 
         mainViewModel.message.observe(this) {
@@ -77,22 +94,22 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.status.observe(this) {
             when(it) {
-                ApiResponse.LOADING -> {
+                ApiStatus.LOADING -> {
                     binding.incLoadingStory.root.visibility = View.VISIBLE
                     binding.rvStory.visibility = View.GONE
                 }
-                ApiResponse.SUCCESS -> {
+                ApiStatus.SUCCESS -> {
                     animStoriesItem.end()
                     binding.incLoadingStory.root.visibility = View.GONE
                     binding.rvStory.visibility = View.VISIBLE
                 }
-                ApiResponse.EMPTY -> {
+                ApiStatus.EMPTY -> {
                     animStoriesItem.end()
                     binding.incLoadingStory.root.visibility = View.GONE
                     binding.incEmptyStory.root.visibility = View.VISIBLE
                     binding.incEmptyStory.errorMessageTextView.text = message
                 }
-                ApiResponse.ERROR -> {
+                ApiStatus.ERROR -> {
                     onStoriesError()
                 }
                 else -> {
@@ -115,6 +132,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.logout -> {
                 mainViewModel.logout()
+                listStories = listOf()
             }
             R.id.addStoryBook -> {
                 startActivity(Intent(this@MainActivity, AddStoryActivity::class.java))
@@ -129,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         binding.incLoadingStory.root.visibility = View.GONE
         binding.incEmptyStory.root.visibility = View.VISIBLE
         if (message.isEmpty()) {
-            binding.incEmptyStory.errorMessageTextView.text = this.getString(R.string.error_story_list)
+            binding.incEmptyStory.errorMessageTextView.text = this.getString(R.string.error_try_again_later)
         } else {
             binding.incEmptyStory.errorMessageTextView.text = message
         }

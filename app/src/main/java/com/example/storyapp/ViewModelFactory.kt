@@ -22,10 +22,10 @@ class ViewModelFactory(
                 MainViewModel(pref, Injection.provideRepository(context)) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel(pref) as T
+                RegisterViewModel(Injection.provideRepository(context)) as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(pref) as T
+                LoginViewModel(pref, Injection.provideRepository(context)) as T
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(pref) as T

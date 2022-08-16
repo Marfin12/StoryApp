@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:fontFamily="sans-serif"
-        android:text="@string/error_story_list"
+        android:text="@string/error_try_again_later"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"

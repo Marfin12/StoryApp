@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/drawable-in/example.xml" value="0.1175" />
+        <entry key="app/src/main/res/drawable-in/icon_story_app_login.xml" value="0.1175" />
+        <entry key="app/src/main/res/drawable-v21/app_widget_background.xml" value="0.1175" />
+        <entry key="app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.1175" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/icon_image_place_holder.xml" value="0.1175" />
         <entry key="app/src/main/res/drawable-v24/icon_settings.xml" value="0.1175" />
@@ -14,12 +18,15 @@
         <entry key="app/src/main/res/drawable/icon_password_error.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_add_story.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/empty_story.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/item_story.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/item_widget.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/loading_common.xml" value="0.1" />
         <entry key="app/src/main/res/layout/loading_story.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/story_widget.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.23489583333333333" />
       </map>
     </option>

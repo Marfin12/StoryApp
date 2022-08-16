@@ -3,18 +3,12 @@ package com.example.storyapp.response
 import com.google.gson.annotations.SerializedName
 
 data class StoryResponse(
-    @field:SerializedName("id")
-    val id: String,
+    @field:SerializedName("listStory")
+    val storyResults: List<StoryResultResponse>,
 
-    @field:SerializedName("name")
-    val name: String,
+    @field:SerializedName("error")
+    val isError: Boolean,
 
-    @field:SerializedName("description")
-    val description: String,
-
-    @field:SerializedName("photoUrl")
-    val photoUrl: String,
-
-    @field:SerializedName("createdAt")
-    val createdAt: String
+    @field:SerializedName("message")
+    val message: String
 )

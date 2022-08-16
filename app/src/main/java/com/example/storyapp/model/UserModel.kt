@@ -1,8 +1,8 @@
 package com.example.storyapp.model
 
 data class UserModel(
+    val id: String,
     val name: String,
-    val email: String,
-    val password: String,
-    val isLogin: Boolean
+    val token: String,
+    val isLogin: Boolean,
 )

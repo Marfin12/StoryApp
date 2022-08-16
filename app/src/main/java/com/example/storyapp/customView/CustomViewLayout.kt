@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import com.example.storyapp.R
 
 open class CustomViewLayout : LinearLayout {
@@ -37,65 +38,76 @@ open class CustomViewLayout : LinearLayout {
         orientation = VERTICAL
     }
 
-    open fun addStoryAppLogo(layoutParams: LayoutParams) {
+    open fun addStoryAppLogo(
+        layoutParams: LayoutParams,
+        iconDrawable: Int = R.drawable.icon_story_app_login
+    ) {
         val storyImageView = ImageView(context)
         layoutParams.setMargins(80, 40, 0, 0)
         storyImageView.layoutParams = layoutParams
         storyImageView.setImageDrawable(
             ContextCompat.getDrawable(
                 context,
-                R.drawable.icon_story_app_login
+                iconDrawable
             ) as Drawable
         )
 
         addView(storyImageView)
     }
 
-    open fun addCommonEditText(
-        editText: EditText,
-        layoutParams: LayoutParams,
-        hint: String
-    ) {
-        layoutParams.setMargins(80, 40, 80, 0)
-        editText.layoutParams = layoutParams
+    open fun addCustomTextViewErrorLayout() {
+        val myParam = LayoutParams(
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.MATCH_PARENT
+        )
+        myParam.setMargins(80, 40, 0, 0)
 
-        editText.background = ContextCompat.getDrawable(context, R.drawable.bg_edittext) as Drawable
-        editText.hint = hint
-
-        onCommonFieldChangedListener(editText, context, customTextViewErrorLayout)
-
-        addView(editText)
-    }
-
-    open fun addPasswordEditText(
-        editText: EditText,
-        layoutParams: LayoutParams,
-        hint: String
-    ) {
-        val editText = EditText(context)
-        layoutParams.setMargins(80, 40, 80, 0)
-        editText.layoutParams = layoutParams
-
-        editText.background = ContextCompat.getDrawable(context, R.drawable.bg_edittext) as Drawable
-        editText.hint = hint
-        editText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-
-        customTextViewErrorLayout.layoutParams = layoutParams
+        customTextViewErrorLayout.layoutParams = myParam
         customTextViewErrorLayout.visibility = View.INVISIBLE
 
-        onPasswordChangedListener(editText, context, customTextViewErrorLayout)
-
-        addView(editText)
         addView(customTextViewErrorLayout)
     }
 
+    open fun addEditText(
+        editText: EditText,
+        layoutParams: LayoutParams,
+        hint: String,
+        onTextChangedListener: ((
+            editText: EditText,
+            context: Context,
+            customViewErrorLayout: CustomTextViewErrorLayout,
+            s: CharSequence
+        ) -> Unit)? = null,
+        inputType: Int? = null
+    ) {
+        layoutParams.setMargins(80, 40, 80, 0)
+        editText.layoutParams = layoutParams
+
+        editText.background = ContextCompat.getDrawable(context, R.drawable.bg_edittext) as Drawable
+        editText.hint = hint
+        editText.setPadding(20)
+        if (inputType != null) editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        if (onTextChangedListener != null) {
+            editText.addTextChangedListener(onEditTextChangedListener(
+                editText, context, customTextViewErrorLayout, onTextChangedListener
+            ))
+        }
+
+        addView(editText)
+    }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
     }
 
-    open fun onCommonFieldChangedListener(
-        editText: EditText, context: Context, customTextViewError: CustomTextViewErrorLayout
+    private fun onEditTextChangedListener(
+        editText: EditText, context: Context, customTextViewError: CustomTextViewErrorLayout,
+        onTextChangedListener: (
+            editText: EditText,
+            context: Context,
+            customViewErrorLayout: CustomTextViewErrorLayout,
+            s: CharSequence
+        ) -> Unit
     ) : TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(
@@ -109,46 +121,7 @@ open class CustomViewLayout : LinearLayout {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isEmpty()) {
-                    editText.background = ContextCompat.getDrawable(context, R.drawable.bg_edittext_error) as Drawable
-                    customTextViewError.textError = context.getString(R.string.error_empty)
-                    customTextViewError.visibility = View.VISIBLE
-                } else {
-                    editText.background = ContextCompat.getDrawable(context, R.drawable.bg_edittext) as Drawable
-                    customTextViewError.visibility = View.INVISIBLE
-                }
-
-
-            }
-
-            override fun afterTextChanged(s: Editable) {
-            }
-        }
-    }
-
-    open fun onPasswordChangedListener(
-        editText: EditText, context: Context, customTextViewError: CustomTextViewErrorLayout
-    ) : TextWatcher {
-        return object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence,
-                start: Int,
-                count: Int,
-                after: Int
-            )
-            {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.length < 6) {
-                    editText.background = ContextCompat.getDrawable(context, R.drawable.bg_edittext_error) as Drawable
-                    customTextViewError.textError = context.getString(R.string.error_password)
-                    customTextViewError.visibility = View.VISIBLE
-                } else {
-                    editText.background = ContextCompat.getDrawable(context, R.drawable.bg_edittext) as Drawable
-                    customTextViewError.visibility = View.INVISIBLE
-                }
+                onTextChangedListener(editText, context, customTextViewError, s)
             }
 
             override fun afterTextChanged(s: Editable) {

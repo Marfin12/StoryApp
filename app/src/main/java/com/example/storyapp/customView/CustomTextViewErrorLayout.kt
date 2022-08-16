@@ -1,6 +1,7 @@
 package com.example.storyapp.customView
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.ImageView
@@ -11,7 +12,8 @@ import com.example.storyapp.R
 
 class CustomTextViewErrorLayout : LinearLayout {
 
-    var textError = context.getString(R.string.error_empty)
+    private var textError = context.getString(R.string.error_empty)
+    val textView = TextView(context)
 
     constructor(context: Context): super(context)
 
@@ -48,7 +50,6 @@ class CustomTextViewErrorLayout : LinearLayout {
         ) as Drawable)
         imageView.layoutParams = imageViewParam
 
-        val textView = TextView(context)
         textView.setTextColor(resources.getColor(R.color.error_password, context.theme))
         textView.layoutParams = textViewParam
         textView.textSize = 14.0f
@@ -56,5 +57,11 @@ class CustomTextViewErrorLayout : LinearLayout {
 
         addView(imageView)
         addView(textView)
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+
+        textView.text = textError
     }
 }

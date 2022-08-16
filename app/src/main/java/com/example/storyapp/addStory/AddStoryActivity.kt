@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.example.storyapp.R
 import com.example.storyapp.createCustomTempFile
 import com.example.storyapp.databinding.ActivityAddStoryBinding
 import com.example.storyapp.main.MainActivity
@@ -51,7 +52,7 @@ class AddStoryActivity : AppCompatActivity() {
             if (!allPermissionsGranted()) {
                 Toast.makeText(
                     this,
-                    "Tidak mendapatkan permission.",
+                    getString(R.string.camera_permission_access_failed),
                     Toast.LENGTH_SHORT
                 ).show()
                 finish()
@@ -84,14 +85,14 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun startGallery() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "Choose a Picture")
+        val chooser = Intent.createChooser(intent, getString(R.string.camera_choose_a_picture))
         launcherIntentGallery.launch(chooser)
     }
 
@@ -168,11 +169,11 @@ class AddStoryActivity : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
-                    Toast.makeText(this@AddStoryActivity, "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddStoryActivity, getString(R.string.camera_retrofit_failure), Toast.LENGTH_SHORT).show()
                 }
             })
         } else {
-            Toast.makeText(this@AddStoryActivity, "Silakan masukkan berkas gambar terlebih dahulu.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@AddStoryActivity, getString(R.string.camera_please_input_image_file), Toast.LENGTH_SHORT).show()
         }
     }
 }

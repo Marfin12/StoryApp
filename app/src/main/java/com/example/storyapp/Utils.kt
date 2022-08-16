@@ -8,6 +8,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
+import androidx.appcompat.app.AlertDialog
+import com.example.storyapp.network.ApiResponse
+import com.example.storyapp.network.ApiStatus
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -96,4 +99,33 @@ fun reduceFileImage(file: File): File {
     bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
 
     return file
+}
+
+fun getApiResponse(message: String?, apiStatus: ApiStatus): ApiResponse {
+    return ApiResponse(
+        message,
+        apiStatus
+    )
+}
+
+fun showMessageDialog(title: Int, message: Int, context: Context) {
+    val builder = AlertDialog.Builder(context)
+    builder
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(android.R.string.ok) { dialog, _ ->
+            dialog.dismiss()
+        }
+        .show()
+}
+
+fun showMessageDialog(title: Int, message: String, context: Context) {
+    val builder = AlertDialog.Builder(context)
+    builder
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(android.R.string.ok) { dialog, _ ->
+            dialog.dismiss()
+        }
+        .show()
 }
