@@ -1,17 +1,16 @@
-package com.example.storyapp
+package com.example.storyapp.core
 
-import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
 import androidx.appcompat.app.AlertDialog
-import com.example.storyapp.model.StoryModel
-import com.example.storyapp.network.ApiResponse
-import com.example.storyapp.network.ApiStatus
+import com.example.storyapp.core.model.StoryModel
+import com.example.storyapp.core.data.network.ApiResponse
+import com.example.storyapp.core.data.network.ApiStatus
+import com.example.storyapp.core.data.response.StoryResultResponse
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,46 +25,6 @@ val timeStamp: String = SimpleDateFormat(
 fun createCustomTempFile(context: Context): File {
     val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     return File.createTempFile(timeStamp, ".jpg", storageDir)
-}
-
-fun createFile(application: Application): File {
-    val mediaDir = application.externalMediaDirs.firstOrNull()?.let {
-        File(it, application.resources.getString(R.string.app_name)).apply { mkdirs() }
-    }
-
-    val outputDirectory = if (
-        mediaDir != null && mediaDir.exists()
-    ) mediaDir else application.filesDir
-
-    return File(outputDirectory, "$timeStamp.jpg")
-}
-
-fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
-    val matrix = Matrix()
-    return if (isBackCamera) {
-        matrix.postRotate(90f)
-        Bitmap.createBitmap(
-            bitmap,
-            0,
-            0,
-            bitmap.width,
-            bitmap.height,
-            matrix,
-            true
-        )
-    } else {
-        matrix.postRotate(-90f)
-        matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
-        Bitmap.createBitmap(
-            bitmap,
-            0,
-            0,
-            bitmap.width,
-            bitmap.height,
-            matrix,
-            true
-        )
-    }
 }
 
 fun uriToFile(selectedImg: Uri, context: Context): File {
@@ -140,4 +99,19 @@ fun showMessageDialog(title: Int, message: String, context: Context) {
             dialog.dismiss()
         }
         .show()
+}
+
+fun mapResponsesToStoryModel(input: List<StoryResultResponse>): List<StoryModel> {
+    val storyList = ArrayList<StoryModel>()
+    input.map {
+        val story = StoryModel(
+            id = it.id,
+            name = it.name,
+            description = it.description,
+            photoUrl = it.photoUrl,
+        )
+        storyList.add(story)
+    }
+
+    return storyList
 }

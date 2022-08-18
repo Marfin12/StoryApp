@@ -10,7 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.storyapp.R
 import java.util.*
 
-internal class StackRemoteViewsFactory(private val mContext: Context) : RemoteViewsService.RemoteViewsFactory {
+internal class StackRemoteViewsFactory(private val mContext: Context) :
+    RemoteViewsService.RemoteViewsFactory {
 
     private val mWidgetItems = ArrayList<Bitmap>()
 
@@ -19,15 +20,11 @@ internal class StackRemoteViewsFactory(private val mContext: Context) : RemoteVi
     }
 
     override fun onDataSetChanged() {
-        println("im here")
-        println(MainActivity.listStories)
         MainActivity.listStories.map {
-            mWidgetItems.add(Glide.
-                with(mContext).
-                asBitmap().
-                load(it.photoUrl)
-                .submit()
-                .get()
+            mWidgetItems.add(
+                Glide.with(mContext).asBitmap().load(it.photoUrl)
+                    .submit()
+                    .get()
             )
         }
     }
@@ -43,7 +40,7 @@ internal class StackRemoteViewsFactory(private val mContext: Context) : RemoteVi
         rv.setImageViewBitmap(R.id.imageView, mWidgetItems[position])
 
         val extras = bundleOf(
-                WidgetStory.EXTRA_ITEM to position
+            WidgetStory.EXTRA_ITEM to position
         )
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)

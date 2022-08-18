@@ -1,4 +1,4 @@
-package com.example.storyapp.model
+package com.example.storyapp.core.model
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
@@ -10,8 +10,8 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     fun getUser(): Flow<UserModel> {
         return dataStore.data.map { preferences ->
             UserModel(
-                preferences[ID_KEY] ?:"",
-                preferences[NAME_KEY] ?:"",
+                preferences[ID_KEY] ?: "",
+                preferences[NAME_KEY] ?: "",
                 preferences[TOKEN_KEY] ?: "",
                 preferences[STATE_KEY] ?: false
             )

@@ -19,7 +19,7 @@
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/loading_story" />
+        layout="@layout/loading_list_story" />
 
     <include
         android:id="@+id/incEmptyStory"

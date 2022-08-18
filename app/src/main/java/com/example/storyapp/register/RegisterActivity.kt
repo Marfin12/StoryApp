@@ -11,10 +11,11 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
+import com.example.storyapp.core.EMPTY_STRING
 import com.example.storyapp.databinding.ActivityRegisterBinding
-import com.example.storyapp.model.UserPreference
-import com.example.storyapp.network.ApiStatus
-import com.example.storyapp.showMessageDialog
+import com.example.storyapp.core.model.UserPreference
+import com.example.storyapp.core.data.network.ApiStatus
+import com.example.storyapp.core.showMessageDialog
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -33,9 +34,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupComponent() {
-        binding.loadingCommon.imageView.setImageDrawable(ContextCompat.getDrawable(
-            this, R.drawable.icon_story_app_register
-        ))
+        binding.loadingCommon.imageView.setImageDrawable(
+            ContextCompat.getDrawable(
+                this, R.drawable.icon_story_app_register
+            )
+        )
     }
 
     private fun setupViewModel() {
@@ -45,7 +48,7 @@ class RegisterActivity : AppCompatActivity() {
         )[RegisterViewModel::class.java]
 
         registerViewModel.status.observe(this) { apiResponse ->
-            when(apiResponse.apiStatus) {
+            when (apiResponse.apiStatus) {
                 ApiStatus.LOADING -> {
                     binding.loadingCommon.loadingMotion.transitionToStart()
                     binding.loadingCommon.root.visibility = View.VISIBLE
@@ -59,7 +62,7 @@ class RegisterActivity : AppCompatActivity() {
                     if (apiResponse.message != null) {
                         showMessageDialog(
                             R.string.failed_register_title,
-                            apiResponse.message!!,
+                            apiResponse.message ?: EMPTY_STRING,
                             this@RegisterActivity
                         )
                     }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".main.MainActivity">
 
-    <com.example.storyapp.customView.LoginViewLayout
+    <com.example.storyapp.core.customView.LoginViewLayout
         android:id="@+id/customLoginApp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/teal_200"
         android:text="@string/login"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@id/registerButton"
         app:layout_constraintTop_toBottomOf="@+id/customLoginApp" />
 
@@ -38,7 +38,7 @@
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/teal_700"
         android:text="@string/register"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/customLoginApp"
         app:layout_constraintTop_toBottomOf="@+id/customLoginApp" />
 

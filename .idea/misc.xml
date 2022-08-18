@@ -15,7 +15,9 @@
         <entry key="app/src/main/res/drawable/bg_edittext_error.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/bg_story.xml" value="0.1175" />
         <entry key="app/src/main/res/drawable/deleted_edittext.xml" value="0.126" />
+        <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/icon_clear_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/icon_eye_password_close.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/icon_eye_password_open.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/icon_password_error.xml" value="0.1" />
@@ -26,11 +28,12 @@
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="app/src/main/res/layout/empty_story.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/item_story.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/item_widget.xml" value="0.1" />
         <entry key="app/src/main/res/layout/loading_common.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/loading_list_story.xml" value="0.1" />
         <entry key="app/src/main/res/layout/loading_story.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/loading_upload_story.xml" value="0.1" />
         <entry key="app/src/main/res/layout/story_widget.xml" value="0.1" />

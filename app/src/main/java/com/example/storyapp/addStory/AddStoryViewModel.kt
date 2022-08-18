@@ -1,12 +1,12 @@
 package com.example.storyapp.addStory
 
 import androidx.lifecycle.*
-import com.example.storyapp.data.StoryRepository
-import com.example.storyapp.getApiResponse
-import com.example.storyapp.model.UserModel
-import com.example.storyapp.model.UserPreference
-import com.example.storyapp.network.ApiResponse
-import com.example.storyapp.network.ApiStatus
+import com.example.storyapp.core.data.StoryRepository
+import com.example.storyapp.core.model.UserModel
+import com.example.storyapp.core.model.UserPreference
+import com.example.storyapp.core.data.network.ApiResponse
+import com.example.storyapp.core.data.network.ApiStatus
+import com.example.storyapp.core.getApiResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -15,7 +15,7 @@ import okhttp3.RequestBody
 class AddStoryViewModel(
     private val pref: UserPreference,
     private val storyRepository: StoryRepository
-    ) : ViewModel() {
+) : ViewModel() {
     private val _uploadStatus = MutableLiveData<ApiResponse<Any>>()
     var uploadStatus: LiveData<ApiResponse<Any>> = _uploadStatus
 

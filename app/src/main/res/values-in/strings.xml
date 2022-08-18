@@ -46,5 +46,6 @@
 
     <string name="loading_common_image">Gambar Loading</string>
     <string name="loading_upload_image">Gambar Loading Unggah</string>
+    <string name="loading_dummy_story_image">Contoh gambar animasi loading</string>
 
 </resources>

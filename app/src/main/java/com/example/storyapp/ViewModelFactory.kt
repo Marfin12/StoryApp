@@ -4,15 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.addStory.AddStoryViewModel
 import com.example.storyapp.detail.DetailViewModel
-import com.example.storyapp.di.Injection
+import com.example.storyapp.core.di.Injection
 import com.example.storyapp.login.LoginViewModel
 import com.example.storyapp.main.MainViewModel
-import com.example.storyapp.model.UserPreference
+import com.example.storyapp.core.model.UserPreference
 import com.example.storyapp.register.RegisterViewModel
 
 class ViewModelFactory(
     private val pref: UserPreference,
-    ) : ViewModelProvider.NewInstanceFactory() {
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

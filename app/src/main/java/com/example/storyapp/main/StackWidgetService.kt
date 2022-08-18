@@ -5,5 +5,5 @@ import android.widget.RemoteViewsService
 
 class StackWidgetService : RemoteViewsService() {
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory =
-            StackRemoteViewsFactory(this.applicationContext)
+        StackRemoteViewsFactory(this.applicationContext)
 }

@@ -11,41 +11,13 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import com.example.storyapp.R
 
-/**
- * Implementation of App Widget functionality.
- */
 class WidgetStory : AppWidgetProvider() {
 
-    companion object {
-
-        private const val TOAST_ACTION = "com.dicoding.picodiploma.TOAST_ACTION"
-        const val EXTRA_ITEM = "com.dicoding.picodiploma.EXTRA_ITEM"
-
-        private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
-            val intent = Intent(context, StackWidgetService::class.java)
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
-
-            val views = RemoteViews(context.packageName, R.layout.widget_story)
-            views.setRemoteAdapter(R.id.stackView, intent)
-            views.setEmptyView(R.id.stackView, R.id.emptyView)
-
-            val toastIntent = Intent(context, WidgetStory::class.java)
-            toastIntent.action = TOAST_ACTION
-            toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-
-            val toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-                else 0
-            )
-            views.setPendingIntentTemplate(R.id.stackView, toastPendingIntent)
-
-            appWidgetManager.updateAppWidget(appWidgetId, views)
-        }
-    }
-
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
@@ -58,6 +30,40 @@ class WidgetStory : AppWidgetProvider() {
                 val viewIndex = intent.getIntExtra(EXTRA_ITEM, 0)
                 Toast.makeText(context, "Touched view $viewIndex", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    companion object {
+
+        private const val TOAST_ACTION = "com.dicoding.picodiploma.TOAST_ACTION"
+        const val EXTRA_ITEM = "com.dicoding.picodiploma.EXTRA_ITEM"
+
+        private fun updateAppWidget(
+            context: Context,
+            appWidgetManager: AppWidgetManager,
+            appWidgetId: Int
+        ) {
+            val intent = Intent(context, StackWidgetService::class.java)
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
+
+            val views = RemoteViews(context.packageName, R.layout.widget_story)
+            views.setRemoteAdapter(R.id.stackView, intent)
+            views.setEmptyView(R.id.stackView, R.id.emptyView)
+
+            val toastIntent = Intent(context, WidgetStory::class.java)
+            toastIntent.action = TOAST_ACTION
+            toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+
+            val toastPendingIntent = PendingIntent.getBroadcast(
+                context, 0, toastIntent,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+                else 0
+            )
+            views.setPendingIntentTemplate(R.id.stackView, toastPendingIntent)
+
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }
 }

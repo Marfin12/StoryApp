@@ -14,12 +14,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.storyapp.R
-import com.example.storyapp.STORY
+import com.example.storyapp.core.STORY
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.databinding.ActivityDetailBinding
 import com.example.storyapp.login.LoginActivity
-import com.example.storyapp.model.StoryModel
-import com.example.storyapp.model.UserPreference
+import com.example.storyapp.core.model.StoryModel
+import com.example.storyapp.core.model.UserPreference
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 

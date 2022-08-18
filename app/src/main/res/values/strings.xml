@@ -46,5 +46,6 @@
 
     <string name="loading_common_image">Loading Image</string>
     <string name="loading_upload_image">Uploading Loading Image</string>
+    <string name="loading_dummy_story_image">Animated loading dummy image</string>
 
 </resources>

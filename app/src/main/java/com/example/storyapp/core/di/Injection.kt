@@ -1,7 +1,7 @@
-package com.example.storyapp.di
+package com.example.storyapp.core.di
 
-import com.example.storyapp.data.StoryRepository
-import com.example.storyapp.network.ApiConfig
+import com.example.storyapp.core.data.StoryRepository
+import com.example.storyapp.core.data.network.ApiConfig
 
 object Injection {
     fun provideRepository(): StoryRepository {

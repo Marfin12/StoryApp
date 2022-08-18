@@ -11,18 +11,20 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
+import com.example.storyapp.core.EMPTY_STRING
 import com.example.storyapp.databinding.ActivityLoginBinding
 import com.example.storyapp.main.MainActivity
-import com.example.storyapp.model.UserPreference
-import com.example.storyapp.network.ApiStatus
+import com.example.storyapp.core.model.UserPreference
+import com.example.storyapp.core.data.network.ApiStatus
 import com.example.storyapp.register.RegisterActivity
-import com.example.storyapp.showMessageDialog
+import com.example.storyapp.core.showMessageDialog
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    var unused = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
         )[LoginViewModel::class.java]
 
         loginViewModel.status.observe(this) { apiResponse ->
-            when(apiResponse.apiStatus) {
+            when (apiResponse.apiStatus) {
                 ApiStatus.LOADING -> {
                     binding.loadingCommon.loadingMotion.transitionToStart()
                     binding.loadingCommon.root.visibility = View.VISIBLE
@@ -58,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                     if (apiResponse.message != null) {
                         showMessageDialog(
                             R.string.failed_login_title,
-                            apiResponse.message!!,
+                            apiResponse.message ?: EMPTY_STRING,
                             this@LoginActivity
                         )
                     }

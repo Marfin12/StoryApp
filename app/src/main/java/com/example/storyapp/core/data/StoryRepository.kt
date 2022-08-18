@@ -1,10 +1,11 @@
-package com.example.storyapp.data
+package com.example.storyapp.core.data
 
-import com.example.storyapp.network.ApiService
-import com.example.storyapp.response.FileUploadResponse
-import com.example.storyapp.response.StoryResponse
-import com.example.storyapp.response.LoginResponse
-import com.example.storyapp.response.RegisterResponse
+import com.example.storyapp.core.EMPTY_STRING
+import com.example.storyapp.core.data.network.ApiService
+import com.example.storyapp.core.data.response.FileUploadResponse
+import com.example.storyapp.core.data.response.StoryResponse
+import com.example.storyapp.core.data.response.LoginResponse
+import com.example.storyapp.core.data.response.RegisterResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -17,7 +18,7 @@ class StoryRepository(private val apiService: ApiService) {
             StoryResponse(
                 listOf(),
                 isError = true,
-                message = ex.message!!
+                message = ex.message ?: EMPTY_STRING
             )
         }
     }
@@ -32,7 +33,7 @@ class StoryRepository(private val apiService: ApiService) {
         } catch(ex: Exception) {
             FileUploadResponse(
                 error = true,
-                message = ex.message!!
+                message = ex.message ?: EMPTY_STRING
             )
         }
     }
@@ -43,7 +44,7 @@ class StoryRepository(private val apiService: ApiService) {
         } catch(ex: Exception) {
             LoginResponse(
                 error = true,
-                message = ex.message!!,
+                message = ex.message ?: EMPTY_STRING,
                 loginResult = null
             )
         }
@@ -57,7 +58,7 @@ class StoryRepository(private val apiService: ApiService) {
         } catch(ex: Exception) {
             RegisterResponse(
                 error = true,
-                message = ex.message!!
+                message = ex.message ?: EMPTY_STRING
             )
         }
     }

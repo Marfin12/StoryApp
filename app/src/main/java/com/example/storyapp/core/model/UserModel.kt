@@ -1,4 +1,4 @@
-package com.example.storyapp.model
+package com.example.storyapp.core.model
 
 data class UserModel(
     val id: String,

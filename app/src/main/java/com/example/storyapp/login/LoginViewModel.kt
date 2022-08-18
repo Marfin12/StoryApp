@@ -1,19 +1,21 @@
 package com.example.storyapp.login
 
-import androidx.lifecycle.*
-import com.example.storyapp.data.StoryRepository
-import com.example.storyapp.getApiResponse
-import com.example.storyapp.model.UserModel
-import com.example.storyapp.model.UserPreference
-import com.example.storyapp.network.ApiResponse
-import com.example.storyapp.network.ApiStatus
-import kotlinx.coroutines.delay
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.storyapp.core.data.StoryRepository
+import com.example.storyapp.core.data.network.ApiResponse
+import com.example.storyapp.core.data.network.ApiStatus
+import com.example.storyapp.core.getApiResponse
+import com.example.storyapp.core.model.UserModel
+import com.example.storyapp.core.model.UserPreference
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val pref: UserPreference,
     private val storyRepository: StoryRepository
-    ) : ViewModel() {
+) : ViewModel() {
     private val _status = MutableLiveData<ApiResponse<Any>>()
     var status: LiveData<ApiResponse<Any>> = _status
 
@@ -21,7 +23,6 @@ class LoginViewModel(
         _status.value = getApiResponse(null, ApiStatus.LOADING)
 
         viewModelScope.launch {
-            delay(1000)
             val resp = storyRepository.login(email, password)
             if (resp.error) {
                 _status.value = getApiResponse(resp.message, ApiStatus.ERROR)

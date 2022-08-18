@@ -1,11 +1,14 @@
-package com.example.storyapp.response
+package com.example.storyapp.core.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class RegisterResponse(
+data class LoginResponse(
     @field:SerializedName("error")
     val error: Boolean,
 
     @field:SerializedName("message")
     val message: String,
+
+    @field:SerializedName("loginResult")
+    val loginResult: LoginResultResponse? = null
 )

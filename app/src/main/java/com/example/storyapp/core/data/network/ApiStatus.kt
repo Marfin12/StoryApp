@@ -1,4 +1,4 @@
-package com.example.storyapp.network
+package com.example.storyapp.core.data.network
 
 enum class ApiStatus {
     SUCCESS,

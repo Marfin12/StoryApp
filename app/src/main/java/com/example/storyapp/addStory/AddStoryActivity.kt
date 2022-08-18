@@ -20,11 +20,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.*
+import com.example.storyapp.core.createCustomTempFile
 import com.example.storyapp.databinding.ActivityAddStoryBinding
 import com.example.storyapp.login.LoginActivity
 import com.example.storyapp.main.MainActivity
-import com.example.storyapp.model.UserPreference
-import com.example.storyapp.network.ApiStatus
+import com.example.storyapp.core.model.UserPreference
+import com.example.storyapp.core.data.network.ApiStatus
+import com.example.storyapp.core.reduceFileImage
+import com.example.storyapp.core.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -41,11 +44,6 @@ class AddStoryActivity : AppCompatActivity() {
 
     private var getFile: File? = null
     private var token = ""
-
-    companion object {
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -91,7 +89,7 @@ class AddStoryActivity : AppCompatActivity() {
         }
 
         addStoryViewModel.uploadStatus.observe(this) { uploadStatus ->
-            when(uploadStatus.apiStatus) {
+            when (uploadStatus.apiStatus) {
                 ApiStatus.LOADING -> {
                     binding.loadingUploadStory.loadingMotion.transitionToStart()
                     binding.loadingUploadStory.root.visibility = View.VISIBLE
@@ -100,8 +98,7 @@ class AddStoryActivity : AppCompatActivity() {
                     binding.loadingUploadStory.root.visibility = View.GONE
 
                     val intent = Intent(this, MainActivity::class.java)
-                    val otherFlags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and otherFlags)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                     finish()
                 }
@@ -160,7 +157,11 @@ class AddStoryActivity : AppCompatActivity() {
             requestImageFile
         )
 
-        addStoryViewModel.uploadStory(token, imageMultipart, desc.toRequestBody("text/plain".toMediaType()))
+        addStoryViewModel.uploadStory(
+            token,
+            imageMultipart,
+            desc.toRequestBody("text/plain".toMediaType())
+        )
     }
 
     private fun startGallery() {
@@ -235,5 +236,10 @@ class AddStoryActivity : AppCompatActivity() {
             return false
         }
         return true
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val REQUEST_CODE_PERMISSIONS = 10
     }
 }
