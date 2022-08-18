@@ -31,7 +31,7 @@
                 android:layout_height="140dp"
                 android:scaleType="fitXY"
                 android:background="@drawable/bg_story"
-                />
+                android:contentDescription="@string/loading_dummy_story_image" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -69,6 +69,7 @@
                 android:layout_height="140dp"
                 android:scaleType="fitXY"
                 android:background="@drawable/bg_story"
+                android:contentDescription="@string/loading_dummy_story_image"
                 />
 
             <TextView
@@ -107,6 +108,7 @@
                 android:layout_height="140dp"
                 android:scaleType="fitXY"
                 android:background="@drawable/bg_story"
+                android:contentDescription="@string/loading_dummy_story_image"
                 />
 
             <TextView
